@@ -2,6 +2,11 @@ import { getLocalStorage } from "./utils.mjs";
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
+  //Check if cartItems is not an array or if it's an empty array
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
+    return; //Do nothing and exit the function
+  }
+  //If not an empty array, it will proceed as usual
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
 }
