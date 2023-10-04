@@ -4,6 +4,7 @@ function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
+  displayTotalElement();
 }
 
 function cartItemTemplate(item) {
@@ -23,6 +24,23 @@ function cartItemTemplate(item) {
 </li>`;
 
   return newItem;
+}
+
+function displayTotalElement(){
+  // Create a div element to hold the cart footer
+  const cartFooter = document.createElement("div");
+  cartFooter.className = "cart-footer hide"; // Add the "hide" class to hide it by default
+
+  // Create a paragraph element for the cart total
+  const cartTotal = document.createElement("p");
+  cartTotal.className = "cart-total";
+  cartTotal.textContent = "Total: $0.00";
+
+  // Append the cartTotal paragraph to the cartFooter div
+  cartFooter.prepend(cartTotal);
+
+  // Append the cartFooter to the body of the HTML document
+  document.body.append(cartFooter);
 }
 
 renderCartContents();
