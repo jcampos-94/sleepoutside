@@ -11,7 +11,7 @@ export function getLocalStorage(key) {
 }
 // save data to local storage
 export function setLocalStorage(key, data) {
-  const dataArray = [];
+  const dataArray = JSON.parse(localStorage.getItem(key)) || [];
   dataArray.push(data);
   localStorage.setItem(key, JSON.stringify(dataArray));
 }
