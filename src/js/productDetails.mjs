@@ -10,6 +10,7 @@ export default async function productDetails(productId) {
     renderProductDetails();
     // add a listener to Add to Cart button
     document.getElementById("addToCart").addEventListener("click", addProductToCart);
+
 }
 
 function addProductToCart() {
@@ -25,4 +26,6 @@ function renderProductDetails() {
     document.querySelector("#productColorName").innerText = product.Colors[0].ColorName;
     document.querySelector("#productDescriptionHtmlSimple").innerHTML = product.DescriptionHtmlSimple;
     document.querySelector("#addToCart").dataset.id = product.Id;
+
+    
 }
