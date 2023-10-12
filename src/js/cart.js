@@ -31,7 +31,7 @@ function cartItemTemplate(item) {
   return newItem;
 }
 
-function displayTotalElement(){
+function displayTotalElement() {
   // Create a div element to hold the cart footer
   const cartFooter = document.createElement("div");
   cartFooter.className = "cart-footer hide"; // Add the "hide" class to hide it by default
