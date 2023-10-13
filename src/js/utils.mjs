@@ -45,3 +45,38 @@ export function renderListWithTemplate(
   const htmlString = list.map(templateFn);
   parentElement.insertAdjacentHTML(position, htmlString.join(""));
 }
+
+const headerTemplateFn = loadTemplate("/partials/header.html");
+const footerTemplateFn = loadTemplate("/partials/footer.html");
+
+export function renderWithTemplate(
+  templateFn,
+  parentElement,
+  data,
+  callback,
+  position = "afterbegin",
+  clear = true
+) {
+  if (clear) {
+    parentElement.innerHTML = "";
+  }
+  parentElement.insertAdjacentHTML(position, templateFn);
+  if (callback){
+    callback(data)
+  }
+}
+
+function loadTemplate(path){
+  return async function () {
+    const res = await fetch(path);
+    if (res.ok) {
+    const html = await res.text();
+    return html;
+    }
+};
+}
+
+function loadHeaderFooter(headerTemplateFn, footerTemplateFn){
+  loadTemplate(headerTemplateFn)
+  loadTemplate(footerTemplateFn)
+}
