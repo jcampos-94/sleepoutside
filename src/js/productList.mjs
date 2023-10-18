@@ -21,9 +21,9 @@ function productCardTemplate(product) {
                     alt="Image of ${product.Name}"
                 />
             </a>
-        <h3 class="card_brand">${product.Brand.Name}</h3>
-        <h2 class="card_name">${product.Name}</h2>
-        <p class="product-card_price">$${product.FinalPrice}</p>
+        <h3 class="card__brand">${product.Brand.Name}</h3>
+        <h2 class="card__name">${product.Name}</h2>
+        <p class="product-card__price">$${product.FinalPrice}</p>
         </li>`;
         return newItem;
     }
