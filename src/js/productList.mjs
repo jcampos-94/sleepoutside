@@ -7,17 +7,14 @@ export default async function productList(selector = ".product-list", category =
     // get the list of products 
     const products = await getData(category);
     // render out the product list to the element
-    //products.map((product) => productListItem(product));
-    //productListContainer.innerHTML = products.join("");
     renderListWithTemplate(productCardTemplate, productListContainer, products)
 }
 
 function productCardTemplate(product) {
-    if (product.Id === "880RR" || product.Id === "985RF" || product.Id === "985PR" || product.Id === "344YJ") {
-        const newItem = `<li class="product-card">
-            <a href="product_pages/index.html?product=${product.Id}" class="card_image">
+    const newItem = `<li class="product-card">
+            <a href="../product_pages/index.html?product=${product.Id}" class="card_image">
                 <img
-                    src="${product.Image}"
+                    src="${product.Images.PrimaryMedium}"
                     alt="Image of ${product.Name}"
                 />
             </a>
@@ -26,6 +23,5 @@ function productCardTemplate(product) {
         <p class="product-card__price">$${product.FinalPrice}</p>
         </li>`;
         return newItem;
-    }
 }
 

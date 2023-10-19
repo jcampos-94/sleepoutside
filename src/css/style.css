@@ -202,6 +202,16 @@ button {
   grid-column: 3;
 }
 
+/* Start main page category grid icons */
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 5%;
+  max-width: 80%;
+  margin: 0 auto;
+}
+/* End main page category grid icons */
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
