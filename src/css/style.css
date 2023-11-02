@@ -201,6 +201,7 @@ button {
   grid-row: 2;
   grid-column: 3;
 }
+/* End cart list card styles */
 
 /* Start main page category grid icons */
 .products-grid {
@@ -211,6 +212,35 @@ button {
   margin: 0 auto;
 }
 /* End main page category grid icons */
+
+/* Start form display */
+fieldset {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.checkout__name,
+.checkout__address {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-summary ul {
+  padding: 0;
+}
+
+.checkout-summary li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.checkout-summary p {
+  margin: 0;
+}
+/* End form display */
 
 @media screen and (min-width: 500px) {
   body {

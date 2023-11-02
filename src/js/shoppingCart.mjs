@@ -41,6 +41,5 @@ function totalCost(){
     totalSum += cardCostInt;
     return totalSum;
   }) ;
-  console.log(totalSum); 
     cartTotal.innerText = "Total: $" + totalSum;
-  } 
+}
