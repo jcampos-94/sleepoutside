@@ -11,9 +11,7 @@ export function getLocalStorage(key) {
 }
 // save data to local storage
 export function setLocalStorage(key, data) {
-  const dataArray = JSON.parse(localStorage.getItem(key)) || [];
-  dataArray.push(data);
-  localStorage.setItem(key, JSON.stringify(dataArray));
+  localStorage.setItem(key, JSON.stringify(data));
 }
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
@@ -24,12 +22,10 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
-// URL Parameters
 export function getParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const product = urlParams.get(param);
-  return product;
+  return urlParams.get(param);
 }
 
 export function renderListWithTemplate(
@@ -46,7 +42,7 @@ export function renderListWithTemplate(
   parentElement.insertAdjacentHTML(position, htmlString.join(""));
 }
 
-function renderWithTemplate(
+export async function renderWithTemplate(
   templateFn,
   parentElement,
   data,
@@ -57,30 +53,58 @@ function renderWithTemplate(
   if (clear) {
     parentElement.innerHTML = "";
   }
-  parentElement.insertAdjacentHTML(position, templateFn);
-  if(callback) {
-      callback(data);
+  const htmlString = await templateFn(data);
+  parentElement.insertAdjacentHTML(position, htmlString);
+  if (callback) {
+    callback(data);
   }
 }
 
 function loadTemplate(path) {
+  // wait what?  we are returning a new function? this is called currying and can be very helpful.
   return async function () {
-      const res = await fetch(path);
-      if (res.ok) {
+    const res = await fetch(path);
+    if (res.ok) {
       const html = await res.text();
       return html;
-      }
+    }
   };
 }
 
 export async function loadHeaderFooter() {
-  //added await to headerTemplateFn and footerTemplateFn because loadTemplate returns an async function
-  const headerTemplateFn = await loadTemplate("/partials/header.html")();
-  const footerTemplateFn = await loadTemplate("/partials/footer.html")();
+  // header template will still be a function! But one where we have pre-supplied the argument.
+  // headerTemplate and footerTemplate will be almost identical, but they will remember the path we passed in when we created them
+  // why is it important that they stay functions?  The renderWithTemplate function is expecting a template function...if we sent it a string it would break, if we changed it to expect a string then it would become less flexible.
+  const headerTemplateFn = loadTemplate("/partials/header.html");
+  const footerTemplateFn = loadTemplate("/partials/footer.html");
+  const headerEl = document.querySelector("#main-header");
+  const footerEl = document.querySelector("#main-footer");
+  renderWithTemplate(headerTemplateFn, headerEl);
+  renderWithTemplate(footerTemplateFn, footerEl);
+}
+export function alertMessage(message, scroll = true, duration = 3000) {
+  const alert = document.createElement("div");
+  alert.classList.add("alert");
+  alert.innerHTML = `<p>${message}</p><span>X</span>`;
 
-  const mainHeader = document.querySelector("#main-header");
-  const mainFooter = document.querySelector("#main-footer");
+  alert.addEventListener("click", function (e) {
+    if (e.target.tagName == "SPAN") {
+      main.removeChild(this);
+    }
+  });
+  const main = document.querySelector("main");
+  main.prepend(alert);
+  // make sure they see the alert by scrolling to the top of the window
+  //we may not always want to do this...so default to scroll=true, but allow it to be passed in and overridden.
+  if (scroll) window.scrollTo(0, 0);
 
-  renderWithTemplate(headerTemplateFn, mainHeader);
-  renderWithTemplate(footerTemplateFn, mainFooter);
+  // left this here to show how i could remove the alert automatically after a certain amount of time.
+  // setTimeout(function () {
+  //   main.removeChild(alert);
+  // }, duration);
+}
+
+export function removeAllAlerts() {
+  const alerts = document.querySelectorAll(".alert");
+  alerts.forEach((alert) => document.querySelector("main").removeChild(alert));
 }

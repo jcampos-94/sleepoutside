@@ -1,22 +1,27 @@
 import { getLocalStorage, renderListWithTemplate } from "./utils.mjs";
 
-export default function ShoppingCart() {
+export default function shoppingCart() {
   const cartItems = getLocalStorage("so-cart");
-  //Check if cartItems is not an array or if it's an empty array
-  if (!Array.isArray(cartItems) || cartItems.length === 0) {
-    return; //Do nothing and exit the function
-  }
-  //If not an empty array, it will proceed as usual
-  const output = document.querySelector(".product-list");
-  renderListWithTemplate(cartItemTemplate, output, cartItems);
-  totalCost();
+  const outputEl = document.querySelector(".product-list");
+  renderListWithTemplate(cartItemTemplate, outputEl, cartItems);
+  const total = calculateListTotal(cartItems);
+  displayCartTotal(total);
 }
 
+function displayCartTotal(total) {
+  if (total > 0) {
+    // show our checkout button and total if there are items in the cart.
+    document.querySelector(".list-footer").classList.remove("hide");
+    document.querySelector(".list-total").innerText += ` $${total}`;
+  } else {
+    document.querySelector(".list-footer").classList.add("hide");
+  }
+}
 function cartItemTemplate(item) {
   const newItem = `<li class="cart-card divider">
   <a href="#" class="cart-card__image">
     <img
-      src="${item.Images.PrimarySmall}"
+      src="${item.Images.PrimaryMedium}"
       alt="${item.Name}"
     />
   </a>
@@ -31,16 +36,8 @@ function cartItemTemplate(item) {
   return newItem;
 }
 
-function totalCost(){
-  const cardPrices = document.querySelectorAll(".cart-card__price");
-  const cartTotal = document.querySelector(".cart-total");
-  let totalSum = 0.00;
-  cardPrices.forEach(function (card){
-    let cardCost = card.innerText.split("$").join("");
-    let cardCostInt = parseFloat(cardCost);
-    totalSum += cardCostInt;
-    return totalSum;
-  }) ;
-  console.log(totalSum); 
-    cartTotal.innerText = "Total: $" + totalSum;
-  } 
+function calculateListTotal(list) {
+  const amounts = list.map((item) => item.FinalPrice);
+  const total = amounts.reduce((sum, item) => sum + item, 0);
+  return total;
+}
